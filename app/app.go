@@ -15,6 +15,7 @@ var (
 func seed() {
 	var s seeds.Seed
 	s.SeedUser()
+	s.SeedPromotion()
 }
 
 func StartApplication() {
