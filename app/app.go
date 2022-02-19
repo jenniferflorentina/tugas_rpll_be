@@ -18,6 +18,7 @@ func seed() {
 	s.SeedPromotion()
 	s.SeedProductCategory()
 	s.SeedProduct()
+	s.SeedPromotionDetail()
 }
 
 func StartApplication() {

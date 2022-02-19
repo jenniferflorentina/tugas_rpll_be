@@ -11,4 +11,5 @@ func migrate() {
 	_ = Orm.AutoMigrate(new(modelPromotion.Promotion))
 	_ = Orm.AutoMigrate(new(modelProduct.ProductCategory))
 	_ = Orm.AutoMigrate(new(modelProduct.Product))
+	_ = Orm.AutoMigrate(new(modelPromotion.PromotionDetail))
 }
