@@ -16,6 +16,8 @@ func seed() {
 	var s seeds.Seed
 	s.SeedUser()
 	s.SeedPromotion()
+	s.SeedProductCategory()
+	s.SeedProduct()
 }
 
 func StartApplication() {
