@@ -1,9 +1,9 @@
 package service
 
 import (
-	"HarapanBangsaMarket/modules/promotion/dto"
-	"HarapanBangsaMarket/modules/promotion/model"
-	"HarapanBangsaMarket/modules/promotion/repository"
+	"HarapanBangsaMarket/modules/dto/promotion"
+	"HarapanBangsaMarket/modules/model/promotion"
+	"HarapanBangsaMarket/modules/repository/promotion"
 )
 
 func FindPromotion() (*[]model.Promotion, error) {

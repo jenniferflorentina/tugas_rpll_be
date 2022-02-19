@@ -2,7 +2,7 @@ package repository
 
 import (
 	"HarapanBangsaMarket/db"
-	"HarapanBangsaMarket/modules/user/model"
+	"HarapanBangsaMarket/modules/model/user"
 	"errors"
 )
 

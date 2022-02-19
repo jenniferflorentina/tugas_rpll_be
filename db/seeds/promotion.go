@@ -2,7 +2,7 @@ package seeds
 
 import (
 	"HarapanBangsaMarket/db"
-	"HarapanBangsaMarket/modules/promotion/model"
+	"HarapanBangsaMarket/modules/model/promotion"
 )
 
 func (s *Seed) SeedPromotion() {

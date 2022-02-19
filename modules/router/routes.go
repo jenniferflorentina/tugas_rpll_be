@@ -1,24 +1,25 @@
 package router
 
 import (
-	"HarapanBangsaMarket/modules/user/controller"
-	"HarapanBangsaMarket/modules/promotion/controller"
+	user "HarapanBangsaMarket/modules/controller/user"
+	promotion "HarapanBangsaMarket/modules/controller/promotion"
+	
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func RouteUsers(e *fiber.App) {
-	e.Get("/users", controller.FindUser)
-	e.Get("/users/:id", controller.FindOneUser)
-	e.Get("/me", controller.Me)
+	e.Get("/users", user.FindUser)
+	e.Get("/users/:id", user.FindOneUser)
+	e.Get("/me", user.Me)
 
-	e.Post("/login", controller.Login)
+	e.Post("/login", user.Login)
 }
 
 func RoutePromotions(e *fiber.App) {
-	e.Get("/promotions", controllerPromotion.FindPromotion)
-	e.Get("/promotions/:id", controllerPromotion.FindOnePromotion)
-	e.Post("/promotions", controllerPromotion.CreatePromotion)
-	e.Put("/promotions/:id", controllerPromotion.UpdatePromotion)
-	e.Delete("/promotions/:id", controllerPromotion.DeletePromotion)
+	e.Get("/promotions", promotion.FindPromotion)
+	e.Get("/promotions/:id", promotion.FindOnePromotion)
+	e.Post("/promotions", promotion.CreatePromotion)
+	e.Put("/promotions/:id", promotion.UpdatePromotion)
+	e.Delete("/promotions/:id", promotion.DeletePromotion)
 }

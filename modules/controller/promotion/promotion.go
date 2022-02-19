@@ -1,17 +1,17 @@
-package controllerPromotion
+package controller
 
 import (
 	e "HarapanBangsaMarket/err"
 	"HarapanBangsaMarket/mapper"
-	"HarapanBangsaMarket/modules/promotion/dto"
-	"HarapanBangsaMarket/modules/promotion/model"
+	"HarapanBangsaMarket/modules/dto/promotion"
+	"HarapanBangsaMarket/modules/model/promotion"
 	"net/http"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 	"gopkg.in/dealancer/validate.v2"
 
-	"HarapanBangsaMarket/modules/promotion/service"
+	"HarapanBangsaMarket/modules/service/promotion"
 	"HarapanBangsaMarket/response"
 )
 

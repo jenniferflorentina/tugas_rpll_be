@@ -3,7 +3,7 @@ package repository
 import (
 	"errors"
 	"HarapanBangsaMarket/db"
-	"HarapanBangsaMarket/modules/promotion/model"
+	"HarapanBangsaMarket/modules/model/promotion"
 )
 
 func FindPromotion() (*[]model.Promotion, error) {

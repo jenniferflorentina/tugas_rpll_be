@@ -2,8 +2,8 @@ package service
 
 import (
 	"HarapanBangsaMarket/hashing"
-	"HarapanBangsaMarket/modules/user/dto"
-	"HarapanBangsaMarket/modules/user/repository"
+	"HarapanBangsaMarket/modules/dto/user"
+	"HarapanBangsaMarket/modules/repository/user"
 	"errors"
 	"time"
 

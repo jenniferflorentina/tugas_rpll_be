@@ -3,8 +3,8 @@ package controller
 import (
 	e "HarapanBangsaMarket/err"
 	"HarapanBangsaMarket/mapper"
-	"HarapanBangsaMarket/modules/user/dto"
-	"HarapanBangsaMarket/modules/user/service"
+	"HarapanBangsaMarket/modules/dto/user"
+	"HarapanBangsaMarket/modules/service/user"
 	"HarapanBangsaMarket/response"
 	"fmt"
 	"net/http"
