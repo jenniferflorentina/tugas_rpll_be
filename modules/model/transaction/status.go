@@ -5,9 +5,10 @@ import "errors"
 type Status int
 
 const (
-	NotProcess Status = iota
-	OnProcess
-	Finish
+	NOTPROCESS Status = iota
+	ONPROCESS
+	FINISH
+	OTHERS
 )
 
 func (s Status) String() string {
@@ -21,12 +22,12 @@ func (s Status) EnumIndex() int {
 func StatusFromString(s string) (Status, error) {
 	switch s {
 	case "Not Process":
-		return NotProcess, nil
+		return NOTPROCESS, nil
 	case "On Process":
-		return On, nil
+		return ONPROCESS, nil
 	case "Finish":
-		return Finish, nil
+		return FINISH, nil
 	default:
-		return errors.New("No Status")
+		return OTHERS, errors.New("No status")
 	}
 }
