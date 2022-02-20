@@ -11,6 +11,7 @@ type Transaction struct {
 	MemberId int64
 	Status   Status `gorm:"smallint"`
 	TransactionDetails []TransactionDetail `gorm:"ForeignKey:TransactionId;references:Id"`
+	TransactionDigitalDetails []TransactionDigitalDetail `gorm:"ForeignKey:TransactionId;references:Id"`
 }
 
 func init() {
