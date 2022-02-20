@@ -8,7 +8,7 @@ import (
 type TransactionDigitalDetail struct {
 	base.Model    `gorm:"extends"`
 	Id            int64
-	CustomerCode  string `gorm:"varchar(100)"`
+	CustomerCode  string
 	ProductId     int64
 	TransactionId int64
 	Transaction   Transaction

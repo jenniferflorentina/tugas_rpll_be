@@ -1,6 +1,7 @@
 package db
 
 import (
+	modelMember "HarapanBangsaMarket/modules/model/member"
 	modelProduct "HarapanBangsaMarket/modules/model/product"
 	modelPromotion "HarapanBangsaMarket/modules/model/promotion"
 	modelTransaction "HarapanBangsaMarket/modules/model/transaction"
@@ -16,4 +17,5 @@ func migrate() {
 	_ = Orm.AutoMigrate(new(modelTransaction.Transaction))
 	_ = Orm.AutoMigrate(new(modelTransaction.TransactionDigitalDetail))
 	_ = Orm.AutoMigrate(new(modelTransaction.TransactionDetail))
+	_ = Orm.AutoMigrate(new(modelMember.Member))
 }
