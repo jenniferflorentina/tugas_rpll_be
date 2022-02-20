@@ -1,8 +1,8 @@
 package service
 
 import (
-	"HarapanBangsaMarket/modules/user/model"
-	"HarapanBangsaMarket/modules/user/repository"
+	"HarapanBangsaMarket/modules/model/user"
+	"HarapanBangsaMarket/modules/repository/user"
 )
 
 func FindUser() (*[]model.User, error) {

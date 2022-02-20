@@ -9,6 +9,7 @@ type Promotion struct {
 	Id int64
 	Type string `gorm:"varchar(100)"`
 	ValidUntil string `gorm:"varchar(100)"`
+	PromotionDetails []PromotionDetail `gorm:"ForeignKey:PromotionId;references:Id"`
 
 }
 

@@ -3,9 +3,9 @@ package controller
 import (
 	e "HarapanBangsaMarket/err"
 	"HarapanBangsaMarket/mapper"
-	"HarapanBangsaMarket/modules/user/dto"
+	"HarapanBangsaMarket/modules/dto/user"
 
-	"HarapanBangsaMarket/modules/user/service"
+	"HarapanBangsaMarket/modules/service/user"
 	"HarapanBangsaMarket/response"
 	"net/http"
 	"strconv"

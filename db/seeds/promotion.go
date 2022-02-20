@@ -2,7 +2,7 @@ package seeds
 
 import (
 	"HarapanBangsaMarket/db"
-	"HarapanBangsaMarket/modules/promotion/model"
+	"HarapanBangsaMarket/modules/model/promotion"
 )
 
 func (s *Seed) SeedPromotion() {
@@ -26,12 +26,12 @@ func (s *Seed) SeedPromotion() {
 
 	}
 	promotions[2] = model.Promotion{
-		Type: "Pembelian Rp75.000",
+		Type: "Buy 1 Get 1",
 		ValidUntil: "20 Maret 2022",
 
 	}
 	promotions[3] = model.Promotion{
-		Type: "Pembelian Rp100.000",
+		Type: "Buy 2 Get 1",
 		ValidUntil: "20 Maret 2022",
 
 	}

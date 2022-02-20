@@ -3,7 +3,7 @@ package seeds
 import (
 	"HarapanBangsaMarket/db"
 	"HarapanBangsaMarket/hashing"
-	"HarapanBangsaMarket/modules/user/model"
+	"HarapanBangsaMarket/modules/model/user"
 )
 
 func (s *Seed) SeedUser() {
