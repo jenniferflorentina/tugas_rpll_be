@@ -7,8 +7,9 @@ import (
 type Transaction struct {
 	base.Model `gorm:"extends"`
 	Id         int64
-	MemberId   int64
-	Status     Status `gorm:"smallint"`
+	//TODO : add FK to Member
+	MemberId int64
+	Status   Status `gorm:"smallint"`
 }
 
 func init() {
