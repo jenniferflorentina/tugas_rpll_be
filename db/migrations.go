@@ -1,9 +1,10 @@
 package db
 
 import (
-	modelUser "HarapanBangsaMarket/modules/model/user"
-	modelPromotion "HarapanBangsaMarket/modules/model/promotion"
 	modelProduct "HarapanBangsaMarket/modules/model/product"
+	modelPromotion "HarapanBangsaMarket/modules/model/promotion"
+	modelTransaction "HarapanBangsaMarket/modules/model/transaction"
+	modelUser "HarapanBangsaMarket/modules/model/user"
 )
 
 func migrate() {
@@ -12,4 +13,5 @@ func migrate() {
 	_ = Orm.AutoMigrate(new(modelProduct.ProductCategory))
 	_ = Orm.AutoMigrate(new(modelProduct.Product))
 	_ = Orm.AutoMigrate(new(modelPromotion.PromotionDetail))
+	_ = Orm.AutoMigrate(new(modelTransaction.Transaction))
 }
