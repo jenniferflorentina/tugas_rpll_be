@@ -10,6 +10,7 @@ type Transaction struct {
 	//TODO : add FK to Member
 	MemberId int64
 	Status   Status `gorm:"smallint"`
+	TransactionDetails []TransactionDetail `gorm:"ForeignKey:TransactionId;references:Id"`
 }
 
 func init() {
