@@ -12,10 +12,17 @@ import (
 	"gopkg.in/dealancer/validate.v2"
 
 	"HarapanBangsaMarket/modules/promotion/service"
+	auth "HarapanBangsaMarket/modules/user/rest-api/controller"
 	"HarapanBangsaMarket/response"
 )
 
 func FindPromotion(c *fiber.Ctx) error {
+	_, authErr := auth.ExtractTokenMetadata(c)
+	if authErr != nil {
+		e.HandleErr(c, authErr)
+		return nil
+	}
+
 	promotions, err := service.FindPromotion()
 	if err != nil {
 		e.HandleErr(c, err)
@@ -37,6 +44,12 @@ func FindPromotion(c *fiber.Ctx) error {
 }
 
 func FindOnePromotion(c *fiber.Ctx) error {
+	_, authErr := auth.ExtractTokenMetadata(c)
+	if authErr != nil {
+		e.HandleErr(c, authErr)
+		return nil
+	}
+
 	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
 	if err != nil {
 		e.HandleErr(c, err)
@@ -59,6 +72,12 @@ func FindOnePromotion(c *fiber.Ctx) error {
 }
 
 func FindPromotioDetailsByPromotion(c *fiber.Ctx) error {
+	_, authErr := auth.ExtractTokenMetadata(c)
+	if authErr != nil {
+		e.HandleErr(c, authErr)
+		return nil
+	}
+
 	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
 	if err != nil {
 		e.HandleErr(c, err)
@@ -85,6 +104,12 @@ func FindPromotioDetailsByPromotion(c *fiber.Ctx) error {
 }
 
 func CreatePromotion(c *fiber.Ctx) error {
+	_, authErr := auth.ExtractTokenMetadata(c)
+	if authErr != nil {
+		e.HandleErr(c, authErr)
+		return nil
+	}
+
 	createDto := new(dto.CreateUpdatePromotionDTO)
 	err := c.BodyParser(createDto)
 	if err != nil {
@@ -122,6 +147,12 @@ func CreatePromotion(c *fiber.Ctx) error {
 }
 
 func UpdatePromotion(c *fiber.Ctx) error {
+	_, authErr := auth.ExtractTokenMetadata(c)
+	if authErr != nil {
+		e.HandleErr(c, authErr)
+		return nil
+	}
+
 	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
 	if err != nil {
 		e.HandleErr(c, err)
@@ -157,6 +188,12 @@ func UpdatePromotion(c *fiber.Ctx) error {
 }
 
 func DeletePromotion(c *fiber.Ctx) error {
+	_, authErr := auth.ExtractTokenMetadata(c)
+	if authErr != nil {
+		e.HandleErr(c, authErr)
+		return nil
+	}
+
 	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
 	if err != nil {
 		e.HandleErr(c, err)
