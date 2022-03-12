@@ -14,21 +14,26 @@ func (s *Seed) SeedPromotionDetail() {
 		return
 	}
 
-	promotionDetails := make([]model.PromotionDetail, 3)
+	promotionDetails := make([]model.PromotionDetail, 4)
 	promotionDetails[0] = model.PromotionDetail{
-		Discount:  5000,
+		Discount:    5000,
 		PromotionId: 1,
-		ProductId:	11,
+		ProductId:   11,
 	}
 	promotionDetails[1] = model.PromotionDetail{
-		Discount:  0,
+		Discount:    0,
 		PromotionId: 3,
-		ProductId:	5,
+		ProductId:   5,
 	}
 	promotionDetails[2] = model.PromotionDetail{
-		Discount:  7500,
+		Discount:    7500,
 		PromotionId: 2,
-		ProductId:	12,
+		ProductId:   12,
+	}
+	promotionDetails[3] = model.PromotionDetail{
+		Discount:    0,
+		PromotionId: 4,
+		ProductId:   8,
 	}
 	_ = db.Orm.Create(&promotionDetails)
 }

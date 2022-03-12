@@ -11,7 +11,7 @@ type PromotionDetail struct {
 	Discount    float32 `gorm:"double"`
 	PromotionId int64
 	ProductId   int64
-	Product     item.Product
+	Product     item.Product `gorm:"foreignKey:ProductId"`
 }
 
 func init() {
