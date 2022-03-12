@@ -1,9 +1,9 @@
 package service
 
 import (
-	dto "HarapanBangsaMarket/modules/dto/payment"
-	model "HarapanBangsaMarket/modules/model/payment"
-	repository "HarapanBangsaMarket/modules/repository/payment"
+	dto "HarapanBangsaMarket/modules/payment/rest-api/dto"
+	model "HarapanBangsaMarket/modules/payment/domain/model"
+	repository "HarapanBangsaMarket/modules/payment/repository"
 )
 
 func FindPayment() (*[]model.Payment, error) {

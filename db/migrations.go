@@ -6,6 +6,7 @@ import (
 	modelPromotion "HarapanBangsaMarket/modules/promotion/domain/model"
 	modelTransaction "HarapanBangsaMarket/modules/transaction/domain/model"
 	modelUser "HarapanBangsaMarket/modules/user/domain/model"
+	modelPayment "HarapanBangsaMarket/modules/payment/domain/model"
 )
 
 func migrate() {
@@ -17,4 +18,7 @@ func migrate() {
 	_ = Orm.AutoMigrate(new(modelTransaction.Transaction))
 	_ = Orm.AutoMigrate(new(modelTransaction.TransactionDetail))
 	_ = Orm.AutoMigrate(new(modelMember.Member))
+	_ = Orm.AutoMigrate(new(modelPayment.PaymentMethod))
+	_ = Orm.AutoMigrate(new(modelPayment.Payment))
+
 }

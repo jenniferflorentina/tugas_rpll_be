@@ -19,6 +19,8 @@ func seed() {
 	s.SeedProductCategory()
 	s.SeedProduct()
 	s.SeedPromotionDetail()
+	s.SeedPayment()
+	s.SeedPaymentMethod()
 }
 
 func StartApplication() {

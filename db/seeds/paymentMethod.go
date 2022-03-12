@@ -2,7 +2,7 @@ package seeds
 
 import (
 	"HarapanBangsaMarket/db"
-	model "HarapanBangsaMarket/modules/model/payment"
+	model "HarapanBangsaMarket/modules/payment/domain/model"
 )
 
 func (s *Seed) SeedPaymentMethod() {
