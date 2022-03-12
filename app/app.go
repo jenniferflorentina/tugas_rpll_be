@@ -15,12 +15,15 @@ var (
 func seed() {
 	var s seeds.Seed
 	s.SeedUser()
-	s.SeedPromotion()
+	s.SeedMember()
 	s.SeedProductCategory()
 	s.SeedProduct()
+	s.SeedPromotion()
 	s.SeedPromotionDetail()
-	s.SeedPayment()
+	s.SeedTransaction()
+	s.SeedTransactionDetail()
 	s.SeedPaymentMethod()
+	s.SeedPayment()
 }
 
 func StartApplication() {
