@@ -12,6 +12,7 @@ type PromotionDetail struct {
 	PromotionId int64
 	ProductId   int64
 	Product     item.Product `gorm:"foreignKey:ProductId"`
+	Promotion   Promotion    `gorm:"ForeignKey:PromotionId"`
 }
 
 func init() {

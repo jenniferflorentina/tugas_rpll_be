@@ -1,9 +1,9 @@
 package router
 
 import (
-	user "HarapanBangsaMarket/modules/user/rest-api/controller"
+	product "HarapanBangsaMarket/modules/product/rest-api/controller"
 	promotion "HarapanBangsaMarket/modules/promotion/rest-api/controller"
-	
+	user "HarapanBangsaMarket/modules/user/rest-api/controller"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -19,7 +19,25 @@ func RouteUsers(e *fiber.App) {
 func RoutePromotions(e *fiber.App) {
 	e.Get("/promotions", promotion.FindPromotion)
 	e.Get("/promotions/:id", promotion.FindOnePromotion)
+	e.Get("/promotions/:id/details", promotion.FindPromotioDetailsByPromotion)
 	e.Post("/promotions", promotion.CreatePromotion)
 	e.Put("/promotions/:id", promotion.UpdatePromotion)
 	e.Delete("/promotions/:id", promotion.DeletePromotion)
+}
+
+func RouteProducts(e *fiber.App) {
+	e.Get("/products", product.FindProduct)
+	e.Get("/products/:id", product.FindOneProduct)
+	e.Post("/products", product.CreateProduct)
+	e.Put("/products/:id", product.UpdateProduct)
+	e.Delete("/products/:id", product.DeleteProduct)
+}
+
+func RouteProductCategories(e *fiber.App) {
+	e.Get("/product-categories", product.FindAllProductCategory)
+	e.Get("/product-categories/:id/products", product.FindAllProductByProductCategory)
+	e.Get("/product-categories/:id", product.FindOneProductCategory)
+	e.Post("/product-categories", product.CreateProductCategory)
+	e.Put("/product-categories/:id", product.UpdateProductCategory)
+	e.Delete("/product-categories/:id", product.DeleteProductCategory)
 }

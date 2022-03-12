@@ -1,13 +1,21 @@
 package service
 
 import (
-	"HarapanBangsaMarket/modules/product/rest-api/dto"
 	"HarapanBangsaMarket/modules/product/domain/model"
 	"HarapanBangsaMarket/modules/product/repository"
+	"HarapanBangsaMarket/modules/product/rest-api/dto"
 )
 
-func FindProduct() (*[]model.Product, error) {
-	return repository.FindProduct()
+func FindAllProduct() (*[]model.Product, error) {
+	return repository.FindAllProduct()
+}
+
+func FindAllProductByProductCategory(productCategoryId int64) (*[]model.Product, error) {
+	productCategory, err := repository.FindOneProductCategory(productCategoryId)
+	if err != nil {
+		return nil, err
+	}
+	return repository.FindAllProductByProductCategory(productCategory.Id)
 }
 
 func FindOneProduct(id int64) (*model.Product, error) {
@@ -15,6 +23,10 @@ func FindOneProduct(id int64) (*model.Product, error) {
 }
 
 func CreateProduct(products *model.Product) error {
+	_, err := repository.FindOneProductCategory(products.ProductCategoryId)
+	if err != nil {
+		return err
+	}
 	return repository.CreateProduct(products)
 }
 
@@ -31,6 +43,9 @@ func UpdateProduct(updateDto *dto.UpdateProductDTO, id int64) (*model.Product, e
 	}
 	if updateDto.Description != "" {
 		products.Description = updateDto.Description
+	}
+	if updateDto.ProductCategoryId > 0 {
+		products.ProductCategoryId = updateDto.ProductCategoryId
 	}
 	if updateDto.Price != 0 {
 		products.Price = updateDto.Price

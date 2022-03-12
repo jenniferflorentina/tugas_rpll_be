@@ -1,14 +1,14 @@
 package repository
 
 import (
-	"errors"
 	"HarapanBangsaMarket/db"
 	"HarapanBangsaMarket/modules/promotion/domain/model"
+	"errors"
 )
 
 func FindPromotion() (*[]model.Promotion, error) {
 	var promotions []model.Promotion
-	result := db.Orm.Find(&promotions)
+	result := db.Orm.Where("deleted_at is null").Find(&promotions)
 	if result.Error != nil {
 		return nil, result.Error
 	}
