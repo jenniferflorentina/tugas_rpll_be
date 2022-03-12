@@ -2,7 +2,7 @@ package seeds
 
 import (
 	"HarapanBangsaMarket/db"
-	"HarapanBangsaMarket/modules/model/product"
+	"HarapanBangsaMarket/modules/product/domain/model"
 )
 
 func (s *Seed) SeedProductCategory() {

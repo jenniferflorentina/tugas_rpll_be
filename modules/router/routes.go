@@ -1,8 +1,8 @@
 package router
 
 import (
-	user "HarapanBangsaMarket/modules/controller/user"
-	promotion "HarapanBangsaMarket/modules/controller/promotion"
+	user "HarapanBangsaMarket/modules/user/rest-api/controller"
+	promotion "HarapanBangsaMarket/modules/promotion/rest-api/controller"
 	
 
 	"github.com/gofiber/fiber/v2"
