@@ -3,30 +3,37 @@ package controller
 import (
 	e "HarapanBangsaMarket/err"
 	"HarapanBangsaMarket/mapper"
-	"HarapanBangsaMarket/modules/promotion/rest-api/dto"
-	"HarapanBangsaMarket/modules/promotion/domain/model"
+	"HarapanBangsaMarket/modules/product/domain/model"
+	"HarapanBangsaMarket/modules/product/rest-api/dto"
 	"net/http"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 	"gopkg.in/dealancer/validate.v2"
 
-	"HarapanBangsaMarket/modules/promotion/service"
+	"HarapanBangsaMarket/modules/product/service"
+	auth "HarapanBangsaMarket/modules/user/rest-api/controller"
 	"HarapanBangsaMarket/response"
 )
 
-func FindPromotion(c *fiber.Ctx) error {
-	promotions, err := service.FindPromotion()
+func FindProduct(c *fiber.Ctx) error {
+	_, authErr := auth.ExtractTokenMetadata(c)
+	if authErr != nil {
+		e.HandleErr(c, authErr)
+		return nil
+	}
+
+	products, err := service.FindAllProduct()
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil
 	}
 
-	var DTOs []dto.PromotionDTO
-	mapper.Map(promotions, &DTOs)
+	var DTOs []dto.ProductDTO
+	mapper.Map(products, &DTOs)
 
-	if promotions == nil {
-		DTOs = []dto.PromotionDTO{}
+	if products == nil {
+		DTOs = []dto.ProductDTO{}
 	}
 
 	_ = c.JSON(response.HTTPResponse{
@@ -36,20 +43,26 @@ func FindPromotion(c *fiber.Ctx) error {
 	return nil
 }
 
-func FindOnePromotion(c *fiber.Ctx) error {
+func FindOneProduct(c *fiber.Ctx) error {
+	_, authErr := auth.ExtractTokenMetadata(c)
+	if authErr != nil {
+		e.HandleErr(c, authErr)
+		return nil
+	}
+
 	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil
 	}
-	promotions, err := service.FindOnePromotion(id)
+	products, err := service.FindOneProduct(id)
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil
 	}
 
-	var DTO dto.PromotionDTO
-	mapper.Map(promotions, &DTO)
+	var DTO dto.ProductDTO
+	mapper.Map(products, &DTO)
 
 	_ = c.JSON(response.HTTPResponse{
 		Code: http.StatusOK,
@@ -58,8 +71,14 @@ func FindOnePromotion(c *fiber.Ctx) error {
 	return nil
 }
 
-func CreatePromotion(c *fiber.Ctx) error {
-	createDto := new(dto.CreateUpdatePromotionDTO)
+func CreateProduct(c *fiber.Ctx) error {
+	_, authErr := auth.ExtractTokenMetadata(c)
+	if authErr != nil {
+		e.HandleErr(c, authErr)
+		return nil
+	}
+
+	createDto := new(dto.CreateProductDTO)
 	err := c.BodyParser(createDto)
 	if err != nil {
 		e.HandleErr(c, err)
@@ -72,10 +91,10 @@ func CreatePromotion(c *fiber.Ctx) error {
 		return nil
 	}
 
-	var promotions model.Promotion
-	mapper.Map(createDto, &promotions)
+	var products model.Product
+	mapper.Map(createDto, &products)
 
-	err = service.CreatePromotion(&promotions)
+	err = service.CreateProduct(&products)
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil
@@ -83,18 +102,24 @@ func CreatePromotion(c *fiber.Ctx) error {
 
 	_ = c.JSON(response.HTTPResponse{
 		Code: http.StatusOK,
-		Data: promotions,
+		Data: products,
 	})
 	return nil
 }
 
-func UpdatePromotion(c *fiber.Ctx) error {
+func UpdateProduct(c *fiber.Ctx) error {
+	_, authErr := auth.ExtractTokenMetadata(c)
+	if authErr != nil {
+		e.HandleErr(c, authErr)
+		return nil
+	}
+
 	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil
 	}
-	updateDto := new(dto.CreateUpdatePromotionDTO)
+	updateDto := new(dto.UpdateProductDTO)
 	err = c.BodyParser(updateDto)
 	if err != nil {
 		e.HandleErr(c, err)
@@ -107,14 +132,14 @@ func UpdatePromotion(c *fiber.Ctx) error {
 		return nil
 	}
 
-	promotions, err := service.UpdatePromotion(updateDto, id)
+	products, err := service.UpdateProduct(updateDto, id)
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil
 	}
 
-	var DTO dto.PromotionDTO
-	mapper.Map(promotions, &DTO)
+	var DTO dto.ProductDTO
+	mapper.Map(products, &DTO)
 
 	_ = c.JSON(response.HTTPResponse{
 		Code: http.StatusOK,
@@ -123,21 +148,27 @@ func UpdatePromotion(c *fiber.Ctx) error {
 	return nil
 }
 
-func DeletePromotion(c *fiber.Ctx) error {
+func DeleteProduct(c *fiber.Ctx) error {
+	_, authErr := auth.ExtractTokenMetadata(c)
+	if authErr != nil {
+		e.HandleErr(c, authErr)
+		return nil
+	}
+
 	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil
 	}
 
-	promotions, err := service.DeletePromotion(id)
+	products, err := service.DeleteProduct(id)
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil
 	}
 
-	var DTO dto.PromotionDTO
-	mapper.Map(promotions, &DTO)
+	var DTO dto.ProductDTO
+	mapper.Map(products, &DTO)
 
 	_ = c.JSON(response.HTTPResponse{
 		Code: http.StatusOK,

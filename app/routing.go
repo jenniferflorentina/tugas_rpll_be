@@ -6,5 +6,7 @@ import (
 
 func mapURLs() {
 	r.RouteUsers(router)
+	r.RouteProductCategories(router)
+	r.RouteProducts(router)
 	r.RoutePromotions(router)
 }

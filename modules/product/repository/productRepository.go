@@ -1,14 +1,24 @@
 package repository
 
 import (
-	"errors"
 	"HarapanBangsaMarket/db"
 	"HarapanBangsaMarket/modules/product/domain/model"
+	"errors"
 )
 
-func FindProduct() (*[]model.Product, error) {
+func FindAllProduct() (*[]model.Product, error) {
 	var products []model.Product
-	result := db.Orm.Find(&products)
+	result := db.Orm.Where("deleted_at is null").Find(&products)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return &products, nil
+}
+
+func FindAllProductByProductCategory(producCategoryId int64) (*[]model.Product, error) {
+	var products []model.Product
+	result := db.Orm.Where("deleted_at is null").Where(&model.Product{ProductCategoryId: producCategoryId}).Find(&products)
 	if result.Error != nil {
 		return nil, result.Error
 	}
