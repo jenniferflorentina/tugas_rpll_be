@@ -16,6 +16,16 @@ func FindPromotionDetailByPromotionId(promotionId int64) (*[]model.PromotionDeta
 	return &promotions, nil
 }
 
+func FindPromotionDetailByPromotionIdAndProductId(promotionId int64, productId int64) (*model.PromotionDetail, error) {
+	var promotions model.PromotionDetail
+	result := db.Orm.Where("deleted_at is null").Where(model.PromotionDetail{PromotionId: promotionId, ProductId: productId}).Preload("Promotion").First(&promotions)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return &promotions, nil
+}
+
 func FindOnePromotionDetail(id int64) (*model.PromotionDetail, error) {
 	var promotion model.PromotionDetail
 	result := db.Orm.Preload("Product").Preload("Promotion").First(&promotion, id)

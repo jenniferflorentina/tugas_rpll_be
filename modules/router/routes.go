@@ -4,6 +4,7 @@ import (
 	member "HarapanBangsaMarket/modules/member/rest-api/controller"
 	product "HarapanBangsaMarket/modules/product/rest-api/controller"
 	promotion "HarapanBangsaMarket/modules/promotion/rest-api/controller"
+	transaction "HarapanBangsaMarket/modules/transaction/rest-api/controller"
 	user "HarapanBangsaMarket/modules/user/rest-api/controller"
 
 	"github.com/gofiber/fiber/v2"
@@ -49,4 +50,11 @@ func RouteMembers(e *fiber.App) {
 	e.Post("/members", member.CreateMember)
 	e.Put("/members/:id", member.UpdateMember)
 	e.Delete("/members/:id", member.DeleteMember)
+}
+
+func RouteTransactions(e *fiber.App) {
+	e.Get("/transactions", transaction.FindTransaction)
+	e.Get("/transactions/:id", transaction.FindOneTransaction)
+	e.Post("/transactions", transaction.CreateTransaction)
+	e.Post("/transactions/check-amount", transaction.CheckAmount)
 }

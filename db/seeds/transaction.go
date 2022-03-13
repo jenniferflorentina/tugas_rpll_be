@@ -16,23 +16,23 @@ func (s *Seed) SeedTransaction() {
 
 	transactions = make([]model.Transaction, 5)
 	transactions[0] = model.Transaction{
-		MemberId: 1,
+		MemberId: func() *int64 { i := int64(1); return &i }(),
 		Status:   2,
 	}
 	transactions[1] = model.Transaction{
-		MemberId: 2,
+		MemberId: func() *int64 { i := int64(2); return &i }(),
 		Status:   2,
 	}
 	transactions[2] = model.Transaction{
-		MemberId: 3,
+		MemberId: func() *int64 { i := int64(3); return &i }(),
 		Status:   2,
 	}
 	transactions[3] = model.Transaction{
-		MemberId: 2,
+		MemberId: func() *int64 { i := int64(2); return &i }(),
 		Status:   2,
 	}
 	transactions[4] = model.Transaction{
-		MemberId: 4,
+		MemberId: func() *int64 { i := int64(4); return &i }(),
 		Status:   2,
 	}
 
