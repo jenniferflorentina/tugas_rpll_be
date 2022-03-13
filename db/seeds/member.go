@@ -16,18 +16,22 @@ func (s *Seed) SeedMember() {
 
 	members = make([]model.Member, 4)
 	members[0] = model.Member{
+		Name: "Adeline",
 		Point:     10,
 		Telephone: "0239283492493",
 	}
 	members[1] = model.Member{
+		Name: "Budi",
 		Point:     100000,
 		Telephone: "0239283422495",
 	}
 	members[2] = model.Member{
+		Name: "Chico",
 		Point:     1000,
 		Telephone: "0838273857879",
 	}
 	members[3] = model.Member{
+		Name: "Dennise",
 		Point:     2340,
 		Telephone: "0838273823170",
 	}
