@@ -1,6 +1,7 @@
 package router
 
 import (
+	member "HarapanBangsaMarket/modules/member/rest-api/controller"
 	product "HarapanBangsaMarket/modules/product/rest-api/controller"
 	promotion "HarapanBangsaMarket/modules/promotion/rest-api/controller"
 	user "HarapanBangsaMarket/modules/user/rest-api/controller"
@@ -40,4 +41,12 @@ func RouteProductCategories(e *fiber.App) {
 	e.Post("/product-categories", product.CreateProductCategory)
 	e.Put("/product-categories/:id", product.UpdateProductCategory)
 	e.Delete("/product-categories/:id", product.DeleteProductCategory)
+}
+
+func RouteMembers(e *fiber.App) {
+	e.Get("/members", member.FindAllMember)
+	e.Get("/members/:id", member.FindOneMember)
+	e.Post("/members", member.CreateMember)
+	e.Put("/members/:id", member.UpdateMember)
+	e.Delete("/members/:id", member.DeleteMember)
 }
