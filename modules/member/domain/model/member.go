@@ -9,7 +9,7 @@ type Member struct {
 	Id         int64
 	Name       string `gorm:"varchar(100)"`
 	Point      int64
-	Telephone  string `gorm:"varchar(100)"`
+	Telephone  string `gorm:"varchar(100);uniqueIndex;"`
 }
 
 func init() {

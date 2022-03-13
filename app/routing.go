@@ -9,4 +9,5 @@ func mapURLs() {
 	r.RouteProductCategories(router)
 	r.RouteProducts(router)
 	r.RoutePromotions(router)
+	r.RouteMembers(router)
 }
