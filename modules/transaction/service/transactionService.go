@@ -29,17 +29,23 @@ func FindAllTransactionDetailByTransaction(transactionId int64) (*[]model.Transa
 }
 
 func CreateTransaction(transactions *model.Transaction, transactionDetails *[]model.TransactionDetail) error {
-	member, err := memberRepo.FindOneMember(*transactions.MemberId)
-	if err != nil {
-		return err
+	if *transactions.MemberId > 0 {
+		member, err := memberRepo.FindOneMember(*transactions.MemberId)
+		if err != nil {
+			return err
+		}
+		transactions.MemberId = &member.Id
+	} else {
+		transactions.MemberId = nil
 	}
-	transactions.MemberId = &member.Id
 
+	transactions.Status = 2
+	transactions.Details = nil
 	repository.CreateTransaction(transactions)
 
 	for i := 0; i < len(*transactionDetails); i++ {
 		var transactionDetail = &(*transactionDetails)[i]
-		transactionDetail.TransactionId = transactions.Id
+		(*transactionDetails)[i].TransactionId = transactions.Id
 		product, err := productRepo.FindOneProduct(transactionDetail.ProductId)
 		if err != nil {
 			return err
@@ -55,13 +61,15 @@ func CreateTransaction(transactions *model.Transaction, transactionDetails *[]mo
 			product.Stock = product.Stock - transactionDetail.Quantity
 			productRepo.UpdateProduct(product)
 		}
-		transactionDetail.ProductId = product.Id
-		if *transactionDetail.PromotionId >= 0 {
+		(*transactionDetails)[i].ProductId = product.Id
+		if *transactionDetail.PromotionId > 0 {
 			promotion, err := promotionRepo.FindOnePromotion(*transactionDetail.PromotionId)
 			if err != nil {
 				return err
 			}
-			transactionDetail.PromotionId = func() *int64 { i := int64(promotion.Id); return &i }()
+			(*transactionDetails)[i].PromotionId = func() *int64 { i := int64(promotion.Id); return &i }()
+		} else {
+			(*transactionDetails)[i].PromotionId = nil
 		}
 		repository.CreateTransactionDetail(transactionDetail)
 	}
@@ -88,20 +96,22 @@ func AmountToPayTransaction(transactionDetails *[]model.TransactionDetail) (floa
 		}
 
 		if transactionDetail.PromotionId != nil {
-			promotion, err := promotionRepo.FindPromotionDetailByPromotionIdAndProductId(*transactionDetail.PromotionId, transactionDetail.ProductId)
-			if err != nil {
-				return 0, err
-			}
-
-			if strings.Contains(strings.ToLower(promotion.Promotion.Type), "buy") && strings.Contains(strings.ToLower(promotion.Promotion.Type), "get") {
-				split := strings.Split(promotion.Promotion.Type, " ")
-				promo, err := strconv.ParseFloat(split[len(split)-1], 32)
+			if *transactionDetail.PromotionId > 0 {
+				promotion, err := promotionRepo.FindPromotionDetailByPromotionIdAndProductId(*transactionDetail.PromotionId, transactionDetail.ProductId)
 				if err != nil {
-					promo = 0
+					return 0, err
 				}
-				total -= float32(promo) * product.Price
-			} else {
-				total -= promotion.Discount
+
+				if strings.Contains(strings.ToLower(promotion.Promotion.Type), "buy") && strings.Contains(strings.ToLower(promotion.Promotion.Type), "get") {
+					split := strings.Split(promotion.Promotion.Type, " ")
+					promo, err := strconv.ParseFloat(split[len(split)-1], 32)
+					if err != nil {
+						promo = 0
+					}
+					total -= float32(promo) * product.Price
+				} else {
+					total -= promotion.Discount
+				}
 			}
 		}
 	}
