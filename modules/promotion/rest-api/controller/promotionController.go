@@ -43,6 +43,39 @@ func FindPromotion(c *fiber.Ctx) error {
 	return nil
 }
 
+func FindPromotionByProductId(c *fiber.Ctx) error {
+	_, authErr := auth.ExtractTokenMetadata(c)
+	if authErr != nil {
+		e.HandleErr(c, authErr)
+		return nil
+	}
+
+	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
+	if err != nil {
+		e.HandleErr(c, err)
+		return nil
+	}
+
+	promotions, err := service.FindAllPromotionByProductId(id)
+	if err != nil {
+		e.HandleErr(c, err)
+		return nil
+	}
+
+	var DTOs []dto.PromotionDTO
+	mapper.Map(promotions, &DTOs)
+
+	if promotions == nil {
+		DTOs = []dto.PromotionDTO{}
+	}
+
+	_ = c.JSON(response.HTTPResponse{
+		Code: http.StatusOK,
+		Data: DTOs,
+	})
+	return nil
+}
+
 func FindOnePromotion(c *fiber.Ctx) error {
 	_, authErr := auth.ExtractTokenMetadata(c)
 	if authErr != nil {

@@ -30,7 +30,9 @@ func RoutePromotions(e *fiber.App) {
 
 func RouteProducts(e *fiber.App) {
 	e.Get("/products", product.FindProduct)
+	e.Get("/products/recommendation", product.FindAllProductRecommendation)
 	e.Get("/products/:id", product.FindOneProduct)
+	e.Get("/products/:id/promotions", promotion.FindPromotionByProductId)
 	e.Post("/products", product.CreateProduct)
 	e.Put("/products/:id", product.UpdateProduct)
 	e.Delete("/products/:id", product.DeleteProduct)

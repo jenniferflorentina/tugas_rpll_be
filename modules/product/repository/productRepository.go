@@ -26,6 +26,16 @@ func FindAllProductByProductCategory(producCategoryId int64) (*[]model.Product, 
 	return &products, nil
 }
 
+func FindAllProductRecommendation() (*[]model.Product, error) {
+	var products []model.Product
+	result := db.Orm.Joins("JOIN transaction_details ON transaction_details.product_id = products.id AND products.deleted_at is null").Group("products.id").Order("COUNT(transaction_details.id) DESC").Find(&products)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return &products, nil
+}
+
 func FindOneProduct(id int64) (*model.Product, error) {
 	var product model.Product
 	result := db.Orm.First(&product, id)

@@ -25,6 +25,10 @@ func FindAllPromotionDetailByPromotion(promotionId int64) (*[]model.PromotionDet
 	return repository.FindPromotionDetailByPromotionId(promotions.Id)
 }
 
+func FindAllPromotionByProductId(productId int64) (*[]model.Promotion, error) {
+	return repository.FindPromotionByProductId(productId)
+}
+
 func CreatePromotion(promotions *model.Promotion, promotionDetails *[]model.PromotionDetail) error {
 	repository.CreatePromotion(promotions)
 
