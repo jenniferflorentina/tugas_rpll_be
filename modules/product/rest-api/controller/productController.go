@@ -43,6 +43,33 @@ func FindProduct(c *fiber.Ctx) error {
 	return nil
 }
 
+func FindAllProductRecommendation(c *fiber.Ctx) error {
+	_, authErr := auth.ExtractTokenMetadata(c)
+	if authErr != nil {
+		e.HandleErr(c, authErr)
+		return nil
+	}
+
+	products, err := service.FindAllProductRecommendation()
+	if err != nil {
+		e.HandleErr(c, err)
+		return nil
+	}
+
+	var DTOs []dto.ProductDTO
+	mapper.Map(products, &DTOs)
+
+	if products == nil {
+		DTOs = []dto.ProductDTO{}
+	}
+
+	_ = c.JSON(response.HTTPResponse{
+		Code: http.StatusOK,
+		Data: DTOs,
+	})
+	return nil
+}
+
 func FindOneProduct(c *fiber.Ctx) error {
 	_, authErr := auth.ExtractTokenMetadata(c)
 	if authErr != nil {

@@ -10,6 +10,10 @@ func FindAllProduct() (*[]model.Product, error) {
 	return repository.FindAllProduct()
 }
 
+func FindAllProductRecommendation() (*[]model.Product, error) {
+	return repository.FindAllProductRecommendation()
+}
+
 func FindAllProductByProductCategory(productCategoryId int64) (*[]model.Product, error) {
 	productCategory, err := repository.FindOneProductCategory(productCategoryId)
 	if err != nil {

@@ -30,6 +30,16 @@ func FindOnePromotion(id int64) (*model.Promotion, error) {
 	return &promotion, nil
 }
 
+func FindPromotionByProductId(productId int64) (*[]model.Promotion, error) {
+	var promotions []model.Promotion
+	result := db.Orm.Joins("JOIN promotion_details ON promotion_details.promotion_id = promotions.id AND promotion_details.product_id = ? AND promotions.deleted_at is null", productId).Find(&promotions)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return &promotions, nil
+}
+
 func CreatePromotion(promotion *model.Promotion) error {
 	result := db.Orm.Create(promotion)
 	if result.Error != nil {
