@@ -2,6 +2,7 @@ package router
 
 import (
 	member "HarapanBangsaMarket/modules/member/rest-api/controller"
+	payment "HarapanBangsaMarket/modules/payment/rest-api/controller"
 	product "HarapanBangsaMarket/modules/product/rest-api/controller"
 	promotion "HarapanBangsaMarket/modules/promotion/rest-api/controller"
 	transaction "HarapanBangsaMarket/modules/transaction/rest-api/controller"
@@ -41,7 +42,6 @@ func RouteProductCategories(e *fiber.App) {
 	e.Get("/product-categories/:id", product.FindOneProductCategory)
 	e.Post("/product-categories", product.CreateProductCategory)
 	e.Put("/product-categories/:id", product.UpdateProductCategory)
-	e.Delete("/product-categories/:id", product.DeleteProductCategory)
 }
 
 func RouteMembers(e *fiber.App) {
@@ -55,6 +55,20 @@ func RouteMembers(e *fiber.App) {
 func RouteTransactions(e *fiber.App) {
 	e.Get("/transactions", transaction.FindTransaction)
 	e.Get("/transactions/:id", transaction.FindOneTransaction)
+	e.Get("/transactions/:id/payments", payment.FindOnePaymentByTransactionId)
 	e.Post("/transactions", transaction.CreateTransaction)
 	e.Post("/transactions/check-amount", transaction.CheckAmount)
+}
+
+func RoutePaymentMethods(e *fiber.App) {
+	e.Get("/payment-methods", payment.FindAllPaymentMethod)
+	e.Get("/payment-methods/:id", payment.FindOnePaymentMethod)
+	e.Post("/payment-methods", payment.CreatePaymentMethod)
+	e.Put("/payment-methods/:id", payment.UpdatePaymentMethod)
+}
+
+func RoutePayments(e *fiber.App) {
+	e.Get("/payments", payment.FindPayment)
+	e.Get("/payments/:id", payment.FindOnePayment)
+	e.Post("/payments", payment.CreatePayment)
 }

@@ -3,37 +3,37 @@ package controller
 import (
 	e "HarapanBangsaMarket/err"
 	"HarapanBangsaMarket/mapper"
-	"HarapanBangsaMarket/modules/product/domain/model"
-	"HarapanBangsaMarket/modules/product/rest-api/dto"
+	"HarapanBangsaMarket/modules/payment/domain/model"
+	"HarapanBangsaMarket/modules/payment/rest-api/dto"
 	"net/http"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 	"gopkg.in/dealancer/validate.v2"
 
-	"HarapanBangsaMarket/modules/product/service"
+	"HarapanBangsaMarket/modules/payment/service"
 	auth "HarapanBangsaMarket/modules/user/rest-api/controller"
 	"HarapanBangsaMarket/response"
 )
 
-func FindAllProductCategory(c *fiber.Ctx) error {
+func FindAllPaymentMethod(c *fiber.Ctx) error {
 	_, authErr := auth.ExtractTokenMetadata(c)
 	if authErr != nil {
 		e.HandleErr(c, authErr)
 		return nil
 	}
 
-	productCategories, err := service.FindAllProductCategory()
+	paymentMethods, err := service.FindAllPaymentMethod()
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil
 	}
 
-	var DTOs []dto.ProductCategoryDTO
-	mapper.Map(productCategories, &DTOs)
+	var DTOs []dto.PaymentMethodDTO
+	mapper.Map(paymentMethods, &DTOs)
 
-	if productCategories == nil {
-		DTOs = []dto.ProductCategoryDTO{}
+	if paymentMethods == nil {
+		DTOs = []dto.PaymentMethodDTO{}
 	}
 
 	_ = c.JSON(response.HTTPResponse{
@@ -43,7 +43,7 @@ func FindAllProductCategory(c *fiber.Ctx) error {
 	return nil
 }
 
-func FindAllProductByProductCategory(c *fiber.Ctx) error {
+func FindOnePaymentMethod(c *fiber.Ctx) error {
 	_, authErr := auth.ExtractTokenMetadata(c)
 	if authErr != nil {
 		e.HandleErr(c, authErr)
@@ -55,46 +55,14 @@ func FindAllProductByProductCategory(c *fiber.Ctx) error {
 		e.HandleErr(c, err)
 		return nil
 	}
-	products, err := service.FindAllProductByProductCategory(id)
+	paymentMethod, err := service.FindOnePaymentMethod(id)
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil
 	}
 
-	var DTOs []dto.ProductDTO
-	mapper.Map(products, &DTOs)
-
-	if products == nil {
-		DTOs = []dto.ProductDTO{}
-	}
-
-	_ = c.JSON(response.HTTPResponse{
-		Code: http.StatusOK,
-		Data: DTOs,
-	})
-	return nil
-}
-
-func FindOneProductCategory(c *fiber.Ctx) error {
-	_, authErr := auth.ExtractTokenMetadata(c)
-	if authErr != nil {
-		e.HandleErr(c, authErr)
-		return nil
-	}
-
-	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
-	if err != nil {
-		e.HandleErr(c, err)
-		return nil
-	}
-	productCategory, err := service.FindOneProductCategory(id)
-	if err != nil {
-		e.HandleErr(c, err)
-		return nil
-	}
-
-	var DTO dto.ProductCategoryDTO
-	mapper.Map(productCategory, &DTO)
+	var DTO dto.PaymentMethodDTO
+	mapper.Map(paymentMethod, &DTO)
 
 	_ = c.JSON(response.HTTPResponse{
 		Code: http.StatusOK,
@@ -103,14 +71,14 @@ func FindOneProductCategory(c *fiber.Ctx) error {
 	return nil
 }
 
-func CreateProductCategory(c *fiber.Ctx) error {
+func CreatePaymentMethod(c *fiber.Ctx) error {
 	_, authErr := auth.ExtractTokenMetadata(c)
 	if authErr != nil {
 		e.HandleErr(c, authErr)
 		return nil
 	}
 
-	createDto := new(dto.CreateUpdateProductCategoryDTO)
+	createDto := new(dto.CreateUpdatePaymentMethodDTO)
 	err := c.BodyParser(createDto)
 	if err != nil {
 		e.HandleErr(c, err)
@@ -123,10 +91,10 @@ func CreateProductCategory(c *fiber.Ctx) error {
 		return nil
 	}
 
-	var productCategory model.ProductCategory
-	mapper.Map(createDto, &productCategory)
+	var paymentMethod model.PaymentMethod
+	mapper.Map(createDto, &paymentMethod)
 
-	err = service.CreateProductCategory(&productCategory)
+	err = service.CreatePaymentMethod(&paymentMethod)
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil
@@ -134,12 +102,12 @@ func CreateProductCategory(c *fiber.Ctx) error {
 
 	_ = c.JSON(response.HTTPResponse{
 		Code: http.StatusOK,
-		Data: productCategory,
+		Data: paymentMethod,
 	})
 	return nil
 }
 
-func UpdateProductCategory(c *fiber.Ctx) error {
+func UpdatePaymentMethod(c *fiber.Ctx) error {
 	_, authErr := auth.ExtractTokenMetadata(c)
 	if authErr != nil {
 		e.HandleErr(c, authErr)
@@ -151,7 +119,7 @@ func UpdateProductCategory(c *fiber.Ctx) error {
 		e.HandleErr(c, err)
 		return nil
 	}
-	updateDto := new(dto.CreateUpdateProductCategoryDTO)
+	updateDto := new(dto.CreateUpdatePaymentMethodDTO)
 	err = c.BodyParser(updateDto)
 	if err != nil {
 		e.HandleErr(c, err)
@@ -164,14 +132,14 @@ func UpdateProductCategory(c *fiber.Ctx) error {
 		return nil
 	}
 
-	productCategory, err := service.UpdateProductCategory(updateDto, id)
+	paymentMethod, err := service.UpdatePaymentMethod(updateDto, id)
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil
 	}
 
-	var DTO dto.ProductCategoryDTO
-	mapper.Map(productCategory, &DTO)
+	var DTO dto.PaymentMethodDTO
+	mapper.Map(paymentMethod, &DTO)
 
 	_ = c.JSON(response.HTTPResponse{
 		Code: http.StatusOK,

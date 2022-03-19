@@ -3,8 +3,8 @@ package controller
 import (
 	e "HarapanBangsaMarket/err"
 	"HarapanBangsaMarket/mapper"
-	dto "HarapanBangsaMarket/modules/payment/rest-api/dto"
 	model "HarapanBangsaMarket/modules/payment/domain/model"
+	dto "HarapanBangsaMarket/modules/payment/rest-api/dto"
 	service "HarapanBangsaMarket/modules/payment/service"
 	"net/http"
 	"strconv"
@@ -58,6 +58,28 @@ func FindOnePayment(c *fiber.Ctx) error {
 	return nil
 }
 
+func FindOnePaymentByTransactionId(c *fiber.Ctx) error {
+	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
+	if err != nil {
+		e.HandleErr(c, err)
+		return nil
+	}
+	payments, err := service.FindOnePaymentByTransactionId(id)
+	if err != nil {
+		e.HandleErr(c, err)
+		return nil
+	}
+
+	var DTO dto.PaymentDTO
+	mapper.Map(payments, &DTO)
+
+	_ = c.JSON(response.HTTPResponse{
+		Code: http.StatusOK,
+		Data: DTO,
+	})
+	return nil
+}
+
 func CreatePayment(c *fiber.Ctx) error {
 	createDto := new(dto.CreatePaymentDTO)
 	err := c.BodyParser(createDto)
@@ -84,64 +106,6 @@ func CreatePayment(c *fiber.Ctx) error {
 	_ = c.JSON(response.HTTPResponse{
 		Code: http.StatusOK,
 		Data: payments,
-	})
-	return nil
-}
-
-func UpdatePayment(c *fiber.Ctx) error {
-	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
-	if err != nil {
-		e.HandleErr(c, err)
-		return nil
-	}
-	updateDto := new(dto.UpdatePaymentDTO)
-	err = c.BodyParser(updateDto)
-	if err != nil {
-		e.HandleErr(c, err)
-		return nil
-	}
-
-	err = validate.Validate(&updateDto)
-	if err != nil {
-		e.HandleErr(c, err)
-		return nil
-	}
-
-	payments, err := service.UpdatePayment(updateDto, id)
-	if err != nil {
-		e.HandleErr(c, err)
-		return nil
-	}
-
-	var DTO dto.PaymentDTO
-	mapper.Map(payments, &DTO)
-
-	_ = c.JSON(response.HTTPResponse{
-		Code: http.StatusOK,
-		Data: DTO,
-	})
-	return nil
-}
-
-func DeletePayment(c *fiber.Ctx) error {
-	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
-	if err != nil {
-		e.HandleErr(c, err)
-		return nil
-	}
-
-	payments, err := service.DeletePayment(id)
-	if err != nil {
-		e.HandleErr(c, err)
-		return nil
-	}
-
-	var DTO dto.PaymentDTO
-	mapper.Map(payments, &DTO)
-
-	_ = c.JSON(response.HTTPResponse{
-		Code: http.StatusOK,
-		Data: DTO,
 	})
 	return nil
 }

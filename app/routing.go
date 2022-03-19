@@ -11,4 +11,6 @@ func mapURLs() {
 	r.RoutePromotions(router)
 	r.RouteMembers(router)
 	r.RouteTransactions(router)
+	r.RoutePaymentMethods(router)
+	r.RoutePayments(router)
 }

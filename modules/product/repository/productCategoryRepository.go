@@ -47,12 +47,3 @@ func UpdateProductCategory(productCategory *model.ProductCategory) (*model.Produ
 	productCategory, _ = FindOneProductCategory(productCategory.Id)
 	return productCategory, nil
 }
-
-// TODO : DELETE PRODUCT RELATED TO PRODUCT CATEGORY
-func DeleteProductCategory(productCategory *model.ProductCategory) (*model.ProductCategory, error) {
-	result := db.Orm.Delete(&productCategory)
-	if result.Error != nil {
-		return nil, result.Error
-	}
-	return productCategory, nil
-}
