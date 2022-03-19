@@ -33,11 +33,3 @@ func UpdateProductCategory(updateDto *dto.CreateUpdateProductCategoryDTO, id int
 	}
 	return productCategory, nil
 }
-
-func DeleteProductCategory(id int64) (*model.ProductCategory, error) {
-	productCategory, err := repository.FindOneProductCategory(id)
-	if err != nil {
-		return nil, err
-	}
-	return repository.DeleteProductCategory(productCategory)
-}

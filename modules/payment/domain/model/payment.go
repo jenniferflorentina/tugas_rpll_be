@@ -10,7 +10,7 @@ type Payment struct {
 	Amount          float32 `gorm:"double"`
 	CustomerCode    string  `gorm:"varchar(100)"`
 	PaymentMethodId int64
-	PaymentMethod   PaymentMethod
+	PaymentMethod   PaymentMethod `gorm:"ForeignKey:PaymentMethodId"`
 	Point           float32
 	Status          string `gorm:"varchar(100)"`
 	TransactionId   int64
