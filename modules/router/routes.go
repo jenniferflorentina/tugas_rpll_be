@@ -34,6 +34,7 @@ func RouteProducts(e *fiber.App) {
 	e.Get("/products/:id", product.FindOneProduct)
 	e.Get("/products/:id/promotions", promotion.FindPromotionByProductId)
 	e.Post("/products", product.CreateProduct)
+	e.Post("/products/:id/images", product.UpdateProductImage)
 	e.Put("/products/:id", product.UpdateProduct)
 	e.Delete("/products/:id", product.DeleteProduct)
 }

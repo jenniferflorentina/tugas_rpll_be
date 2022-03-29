@@ -14,7 +14,7 @@ type Product struct {
 	Description       string  `gorm:"varchar(255)"`
 	Price             float32 `gorm:"double"`
 	Stock             int64
-	ImageUrl          string `gorm:"varchar(255)"`
+	ImageUrl          []byte `gorm:"column:image_url" schema:"-"`
 }
 
 func init() {

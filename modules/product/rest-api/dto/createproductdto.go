@@ -6,6 +6,5 @@ type CreateProductDTO struct {
 	Description       string  `json:"description"`
 	Price             float32 `json:"price"`
 	Stock             int64   `json:"stock"`
-	ImageUrl          string  `json:"imageurl"`
 	ProductCategoryId int64   `json:"productCategoryId"`
 }

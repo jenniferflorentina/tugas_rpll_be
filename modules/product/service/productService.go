@@ -57,9 +57,6 @@ func UpdateProduct(updateDto *dto.UpdateProductDTO, id int64) (*model.Product, e
 	if updateDto.Stock >= 0 {
 		products.Stock = updateDto.Stock
 	}
-	if updateDto.ImageUrl != "" {
-		products.ImageUrl = updateDto.ImageUrl
-	}
 	products, err = repository.UpdateProduct(products)
 	if err != nil {
 		return nil, err
@@ -73,4 +70,19 @@ func DeleteProduct(id int64) (*model.Product, error) {
 		return nil, err
 	}
 	return repository.DeleteProduct(products)
+}
+
+func UpdateProductImage(image []byte, id int64) (*model.Product, error) {
+	products, err := repository.FindOneProduct(id)
+	if err != nil {
+		return nil, err
+	}
+
+	products.ImageUrl = image
+
+	products, err = repository.UpdateProduct(products)
+	if err != nil {
+		return nil, err
+	}
+	return products, nil
 }
