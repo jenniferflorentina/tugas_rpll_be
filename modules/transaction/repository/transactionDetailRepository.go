@@ -4,6 +4,8 @@ import (
 	"HarapanBangsaMarket/db"
 	"HarapanBangsaMarket/modules/transaction/domain/model"
 	"errors"
+
+	"gorm.io/gorm"
 )
 
 func FindTransactionDetailByTransactionId(transactionId int64) (*[]model.TransactionDetail, error) {
@@ -30,8 +32,8 @@ func FindOneTransactionDetail(id int64) (*model.TransactionDetail, error) {
 	return &transaction, nil
 }
 
-func CreateTransactionDetail(transaction *model.TransactionDetail) error {
-	result := db.Orm.Create(transaction)
+func CreateTransactionDetail(transaction *model.TransactionDetail, tx *gorm.DB) error {
+	result := tx.Create(transaction)
 	if result.Error != nil {
 		return result.Error
 	}
