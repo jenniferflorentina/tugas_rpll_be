@@ -96,7 +96,7 @@ func (s *Seed) SeedProduct() {
 		Stock:             102,
 	}
 	product[10] = model.Product{
-		ProductCategoryId: 2,
+		ProductCategoryId: 5,
 		Name:              "Ponds",
 		Code:              "Pk-01",
 		Description:       "Sabun pencuci wajah",
