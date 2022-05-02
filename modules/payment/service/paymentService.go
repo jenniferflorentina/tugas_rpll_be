@@ -39,6 +39,7 @@ func CreatePayment(payment *model.Payment) error {
 			}
 			memberRepository.UpdateMember(member)
 		}
+		member.Point += int64(payment.Amount * 0.05)
 	}
 
 	payment.Status = "Complete"
