@@ -18,7 +18,7 @@ func CreatePaymentMethod(paymentMethod *model.PaymentMethod) error {
 	return repository.CreatePaymentMethod(paymentMethod)
 }
 
-func UpdatePaymentMethod(updateDto *dto.CreateUpdatePaymentMethodDTO, id int64) (*model.PaymentMethod, error) {
+func UpdatePaymentMethod(updateDto *dto.CreateUpdatePaymentMethodDTO, id int64, userId int64) (*model.PaymentMethod, error) {
 	paymentMethod, err := repository.FindOnePaymentMethod(id)
 	if err != nil {
 		return nil, err
@@ -31,9 +31,12 @@ func UpdatePaymentMethod(updateDto *dto.CreateUpdatePaymentMethodDTO, id int64) 
 		paymentMethod.Code = updateDto.Code
 	}
 
+	paymentMethod.UpdatedBy = userId
+
 	paymentMethod, err = repository.UpdatePaymentMethod(paymentMethod)
 	if err != nil {
 		return nil, err
 	}
+
 	return paymentMethod, nil
 }

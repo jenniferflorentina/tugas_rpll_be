@@ -18,7 +18,7 @@ func CreateMember(Member *model.Member) error {
 	return repository.CreateMember(Member)
 }
 
-func UpdateMember(updateDto *dto.UpdateMemberDTO, id int64) (*model.Member, error) {
+func UpdateMember(updateDto *dto.UpdateMemberDTO, id int64, userId int64) (*model.Member, error) {
 	member, err := repository.FindOneMember(id)
 	if err != nil {
 		return nil, err
@@ -35,6 +35,8 @@ func UpdateMember(updateDto *dto.UpdateMemberDTO, id int64) (*model.Member, erro
 		member.Point = updateDto.Point
 	}
 
+	member.UpdatedBy = userId
+
 	member, err = repository.UpdateMember(member)
 	if err != nil {
 		return nil, err
@@ -42,10 +44,21 @@ func UpdateMember(updateDto *dto.UpdateMemberDTO, id int64) (*model.Member, erro
 	return member, nil
 }
 
-func DeleteMember(id int64) (*model.Member, error) {
+func DeleteMember(id int64, userId int64) (*model.Member, error) {
 	member, err := repository.FindOneMember(id)
 	if err != nil {
 		return nil, err
 	}
-	return repository.DeleteMember(member)
+
+	member.DeletedBy = userId
+	member, err = repository.UpdateMember(member)
+	if err != nil {
+		return nil, err
+	}
+
+	member, err = repository.DeleteMember(member)
+	if err != nil {
+		return nil, err
+	}
+	return member, nil
 }

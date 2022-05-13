@@ -6,6 +6,7 @@ import (
 	model "HarapanBangsaMarket/modules/payment/domain/model"
 	dto "HarapanBangsaMarket/modules/payment/rest-api/dto"
 	service "HarapanBangsaMarket/modules/payment/service"
+	auth "HarapanBangsaMarket/modules/user/rest-api/controller"
 	"net/http"
 	"strconv"
 
@@ -88,6 +89,12 @@ func CreatePayment(c *fiber.Ctx) error {
 		return nil
 	}
 
+	userId, extractErr := auth.ExtractUserId(c)
+	if extractErr != nil {
+		e.HandleErr(c, extractErr)
+		return nil
+	}
+
 	err = validate.Validate(&createDto)
 	if err != nil {
 		e.HandleErr(c, err)
@@ -95,6 +102,7 @@ func CreatePayment(c *fiber.Ctx) error {
 	}
 
 	var payments model.Payment
+	payments.CreatedBy = int64(userId)
 	mapper.Map(createDto, &payments)
 
 	err = service.CreatePayment(&payments)

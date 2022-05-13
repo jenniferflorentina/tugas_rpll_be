@@ -78,6 +78,12 @@ func CreatePaymentMethod(c *fiber.Ctx) error {
 		return nil
 	}
 
+	userId, extractErr := auth.ExtractUserId(c)
+	if extractErr != nil {
+		e.HandleErr(c, extractErr)
+		return nil
+	}
+
 	createDto := new(dto.CreateUpdatePaymentMethodDTO)
 	err := c.BodyParser(createDto)
 	if err != nil {
@@ -92,6 +98,7 @@ func CreatePaymentMethod(c *fiber.Ctx) error {
 	}
 
 	var paymentMethod model.PaymentMethod
+	paymentMethod.CreatedBy = int64(userId)
 	mapper.Map(createDto, &paymentMethod)
 
 	err = service.CreatePaymentMethod(&paymentMethod)
@@ -114,6 +121,12 @@ func UpdatePaymentMethod(c *fiber.Ctx) error {
 		return nil
 	}
 
+	userId, extractErr := auth.ExtractUserId(c)
+	if extractErr != nil {
+		e.HandleErr(c, extractErr)
+		return nil
+	}
+
 	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
 	if err != nil {
 		e.HandleErr(c, err)
@@ -132,7 +145,7 @@ func UpdatePaymentMethod(c *fiber.Ctx) error {
 		return nil
 	}
 
-	paymentMethod, err := service.UpdatePaymentMethod(updateDto, id)
+	paymentMethod, err := service.UpdatePaymentMethod(updateDto, id, int64(userId))
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil

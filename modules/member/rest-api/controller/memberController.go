@@ -78,6 +78,12 @@ func CreateMember(c *fiber.Ctx) error {
 		return nil
 	}
 
+	userId, extractErr := auth.ExtractUserId(c)
+	if extractErr != nil {
+		e.HandleErr(c, extractErr)
+		return nil
+	}
+
 	createDto := new(dto.CreateMemberDTO)
 	err := c.BodyParser(createDto)
 	if err != nil {
@@ -92,6 +98,7 @@ func CreateMember(c *fiber.Ctx) error {
 	}
 
 	var member model.Member
+	member.CreatedBy = int64(userId)
 	mapper.Map(createDto, &member)
 
 	err = service.CreateMember(&member)
@@ -114,11 +121,18 @@ func UpdateMember(c *fiber.Ctx) error {
 		return nil
 	}
 
+	userId, extractErr := auth.ExtractUserId(c)
+	if extractErr != nil {
+		e.HandleErr(c, extractErr)
+		return nil
+	}
+
 	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil
 	}
+
 	updateDto := new(dto.UpdateMemberDTO)
 	err = c.BodyParser(updateDto)
 	if err != nil {
@@ -132,7 +146,7 @@ func UpdateMember(c *fiber.Ctx) error {
 		return nil
 	}
 
-	member, err := service.UpdateMember(updateDto, id)
+	member, err := service.UpdateMember(updateDto, id, int64(userId))
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil
@@ -155,13 +169,19 @@ func DeleteMember(c *fiber.Ctx) error {
 		return nil
 	}
 
+	userId, extractErr := auth.ExtractUserId(c)
+	if extractErr != nil {
+		e.HandleErr(c, extractErr)
+		return nil
+	}
+
 	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil
 	}
 
-	member, err := service.DeleteMember(id)
+	member, err := service.DeleteMember(id, int64(userId))
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil
