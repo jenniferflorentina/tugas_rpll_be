@@ -143,6 +143,12 @@ func CreatePromotion(c *fiber.Ctx) error {
 		return nil
 	}
 
+	userId, extractErr := auth.ExtractUserId(c)
+	if extractErr != nil {
+		e.HandleErr(c, extractErr)
+		return nil
+	}
+
 	createDto := new(dto.CreateUpdatePromotionDTO)
 	err := c.BodyParser(createDto)
 	if err != nil {
@@ -157,6 +163,7 @@ func CreatePromotion(c *fiber.Ctx) error {
 	}
 
 	var promotions model.Promotion
+	promotions.CreatedBy = int64(userId)
 	mapper.Map(createDto, &promotions)
 
 	var promotionDetails []model.PromotionDetail
@@ -186,6 +193,12 @@ func UpdatePromotion(c *fiber.Ctx) error {
 		return nil
 	}
 
+	userId, extractErr := auth.ExtractUserId(c)
+	if extractErr != nil {
+		e.HandleErr(c, extractErr)
+		return nil
+	}
+
 	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
 	if err != nil {
 		e.HandleErr(c, err)
@@ -204,7 +217,7 @@ func UpdatePromotion(c *fiber.Ctx) error {
 		return nil
 	}
 
-	promotions, err := service.UpdatePromotion(updateDto, id)
+	promotions, err := service.UpdatePromotion(updateDto, id, int64(userId))
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil
@@ -227,13 +240,19 @@ func DeletePromotion(c *fiber.Ctx) error {
 		return nil
 	}
 
+	userId, extractErr := auth.ExtractUserId(c)
+	if extractErr != nil {
+		e.HandleErr(c, extractErr)
+		return nil
+	}
+
 	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil
 	}
 
-	promotions, err := service.DeletePromotion(id)
+	promotions, err := service.DeletePromotion(id, int64(userId))
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil

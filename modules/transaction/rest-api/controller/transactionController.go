@@ -125,6 +125,12 @@ func CreateTransaction(c *fiber.Ctx) error {
 		return nil
 	}
 
+	userId, extractErr := auth.ExtractUserId(c)
+	if extractErr != nil {
+		e.HandleErr(c, extractErr)
+		return nil
+	}
+
 	createDto := new(dto.CreateTransactionDTO)
 	err := c.BodyParser(createDto)
 	if err != nil {
@@ -139,6 +145,7 @@ func CreateTransaction(c *fiber.Ctx) error {
 	}
 
 	var transactions model.Transaction
+	transactions.CreatedBy = int64(userId)
 	mapper.Map(createDto, &transactions)
 
 	var transactionDetails []model.TransactionDetail

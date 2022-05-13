@@ -110,6 +110,12 @@ func CreateProductCategory(c *fiber.Ctx) error {
 		return nil
 	}
 
+	userId, extractErr := auth.ExtractUserId(c)
+	if extractErr != nil {
+		e.HandleErr(c, extractErr)
+		return nil
+	}
+
 	createDto := new(dto.CreateUpdateProductCategoryDTO)
 	err := c.BodyParser(createDto)
 	if err != nil {
@@ -124,6 +130,7 @@ func CreateProductCategory(c *fiber.Ctx) error {
 	}
 
 	var productCategory model.ProductCategory
+	productCategory.CreatedBy = int64(userId)
 	mapper.Map(createDto, &productCategory)
 
 	err = service.CreateProductCategory(&productCategory)
@@ -146,6 +153,12 @@ func UpdateProductCategory(c *fiber.Ctx) error {
 		return nil
 	}
 
+	userId, extractErr := auth.ExtractUserId(c)
+	if extractErr != nil {
+		e.HandleErr(c, extractErr)
+		return nil
+	}
+
 	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
 	if err != nil {
 		e.HandleErr(c, err)
@@ -164,7 +177,7 @@ func UpdateProductCategory(c *fiber.Ctx) error {
 		return nil
 	}
 
-	productCategory, err := service.UpdateProductCategory(updateDto, id)
+	productCategory, err := service.UpdateProductCategory(updateDto, id, int64(userId))
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil

@@ -55,7 +55,7 @@ func CreatePromotion(promotions *model.Promotion, promotionDetails *[]model.Prom
 	return nil
 }
 
-func UpdatePromotion(updateDto *dto.CreateUpdatePromotionDTO, id int64) (*model.Promotion, error) {
+func UpdatePromotion(updateDto *dto.CreateUpdatePromotionDTO, id int64, userId int64) (*model.Promotion, error) {
 	tx := db.Orm.Begin()
 
 	promotions, err := repository.FindOnePromotion(id)
@@ -98,6 +98,7 @@ func UpdatePromotion(updateDto *dto.CreateUpdatePromotionDTO, id int64) (*model.
 		}
 	}
 
+	promotions.UpdatedBy = userId
 	promotions, err = repository.UpdatePromotion(promotions)
 	if err != nil {
 		return nil, err
@@ -107,11 +108,18 @@ func UpdatePromotion(updateDto *dto.CreateUpdatePromotionDTO, id int64) (*model.
 	return promotions, nil
 }
 
-func DeletePromotion(id int64) (*model.Promotion, error) {
+func DeletePromotion(id int64, userId int64) (*model.Promotion, error) {
 	promotions, err := repository.FindOnePromotion(id)
 	if err != nil {
 		return nil, err
 	}
+
+	promotions.DeletedBy = userId
+	promotions, err = repository.UpdatePromotion(promotions)
+	if err != nil {
+		return nil, err
+	}
+
 	promotionDetails, _ := repository.FindPromotionDetailByPromotionId(promotions.Id)
 	for i := 0; i < len(*promotionDetails); i++ {
 		var promotionDetail = &(*promotionDetails)[i]

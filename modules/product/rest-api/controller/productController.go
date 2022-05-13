@@ -107,6 +107,12 @@ func CreateProduct(c *fiber.Ctx) error {
 		return nil
 	}
 
+	userId, extractErr := auth.ExtractUserId(c)
+	if extractErr != nil {
+		e.HandleErr(c, extractErr)
+		return nil
+	}
+
 	createDto := new(dto.CreateProductDTO)
 	err := c.BodyParser(createDto)
 	if err != nil {
@@ -121,6 +127,7 @@ func CreateProduct(c *fiber.Ctx) error {
 	}
 
 	var products model.Product
+	products.CreatedBy = int64(userId)
 	mapper.Map(createDto, &products)
 
 	err = service.CreateProduct(&products)
@@ -143,6 +150,12 @@ func UpdateProduct(c *fiber.Ctx) error {
 		return nil
 	}
 
+	userId, extractErr := auth.ExtractUserId(c)
+	if extractErr != nil {
+		e.HandleErr(c, extractErr)
+		return nil
+	}
+
 	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
 	if err != nil {
 		e.HandleErr(c, err)
@@ -161,7 +174,7 @@ func UpdateProduct(c *fiber.Ctx) error {
 		return nil
 	}
 
-	products, err := service.UpdateProduct(updateDto, id)
+	products, err := service.UpdateProduct(updateDto, id, int64(userId))
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil
@@ -184,13 +197,19 @@ func DeleteProduct(c *fiber.Ctx) error {
 		return nil
 	}
 
+	userId, extractErr := auth.ExtractUserId(c)
+	if extractErr != nil {
+		e.HandleErr(c, extractErr)
+		return nil
+	}
+
 	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil
 	}
 
-	products, err := service.DeleteProduct(id)
+	products, err := service.DeleteProduct(id, int64(userId))
 	if err != nil {
 		e.HandleErr(c, err)
 		return nil
@@ -225,7 +244,7 @@ func UpdateProductImage(c *fiber.Ctx) error {
 		return c.JSON(fiber.Map{"status": 500, "message": "Server error", "data": nil})
 	}
 
-	img, _:= file.Open()
+	img, _ := file.Open()
 	fmt.Printf("Uploaded File: %+v\n", file.Filename)
 	fmt.Printf("File Size: %+v\n", file.Size)
 	fmt.Printf("MIME Header: %+v\n", file.Header)

@@ -34,7 +34,7 @@ func CreateProduct(products *model.Product) error {
 	return repository.CreateProduct(products)
 }
 
-func UpdateProduct(updateDto *dto.UpdateProductDTO, id int64) (*model.Product, error) {
+func UpdateProduct(updateDto *dto.UpdateProductDTO, id int64, userId int64) (*model.Product, error) {
 	products, err := repository.FindOneProduct(id)
 	if err != nil {
 		return nil, err
@@ -57,6 +57,9 @@ func UpdateProduct(updateDto *dto.UpdateProductDTO, id int64) (*model.Product, e
 	if updateDto.Stock >= 0 {
 		products.Stock = updateDto.Stock
 	}
+
+	products.UpdatedBy = userId
+
 	products, err = repository.UpdateProduct(products)
 	if err != nil {
 		return nil, err
@@ -64,11 +67,18 @@ func UpdateProduct(updateDto *dto.UpdateProductDTO, id int64) (*model.Product, e
 	return products, nil
 }
 
-func DeleteProduct(id int64) (*model.Product, error) {
+func DeleteProduct(id int64, userId int64) (*model.Product, error) {
 	products, err := repository.FindOneProduct(id)
 	if err != nil {
 		return nil, err
 	}
+
+	products.DeletedBy = userId
+	products, err = repository.UpdateProduct(products)
+	if err != nil {
+		return nil, err
+	}
+
 	return repository.DeleteProduct(products)
 }
 

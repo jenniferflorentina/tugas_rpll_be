@@ -18,7 +18,7 @@ func CreateProductCategory(productCategory *model.ProductCategory) error {
 	return repository.CreateProductCategory(productCategory)
 }
 
-func UpdateProductCategory(updateDto *dto.CreateUpdateProductCategoryDTO, id int64) (*model.ProductCategory, error) {
+func UpdateProductCategory(updateDto *dto.CreateUpdateProductCategoryDTO, id int64, userId int64) (*model.ProductCategory, error) {
 	productCategory, err := repository.FindOneProductCategory(id)
 	if err != nil {
 		return nil, err
@@ -26,6 +26,8 @@ func UpdateProductCategory(updateDto *dto.CreateUpdateProductCategoryDTO, id int
 	if updateDto.Name != "" {
 		productCategory.Name = updateDto.Name
 	}
+
+	productCategory.CreatedBy = userId
 
 	productCategory, err = repository.UpdateProductCategory(productCategory)
 	if err != nil {
