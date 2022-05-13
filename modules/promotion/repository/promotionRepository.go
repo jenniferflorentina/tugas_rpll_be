@@ -4,6 +4,8 @@ import (
 	"HarapanBangsaMarket/db"
 	"HarapanBangsaMarket/modules/promotion/domain/model"
 	"errors"
+
+	"gorm.io/gorm"
 )
 
 func FindPromotion() (*[]model.Promotion, error) {
@@ -40,8 +42,8 @@ func FindPromotionByProductId(productId int64) (*[]model.Promotion, error) {
 	return &promotions, nil
 }
 
-func CreatePromotion(promotion *model.Promotion) error {
-	result := db.Orm.Create(promotion)
+func CreatePromotion(promotion *model.Promotion, tx *gorm.DB) error {
+	result := tx.Create(promotion)
 	if result.Error != nil {
 		return result.Error
 	}

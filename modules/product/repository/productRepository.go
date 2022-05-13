@@ -51,7 +51,7 @@ func FindOneProduct(id int64) (*model.Product, error) {
 }
 
 func CreateProduct(product *model.Product) error {
-	result := db.Orm.Create(product)
+	result := db.Orm.Create(&product)
 	if result.Error != nil {
 		return result.Error
 	}

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"HarapanBangsaMarket/db"
 	"HarapanBangsaMarket/modules/transaction/domain/model"
 	"HarapanBangsaMarket/modules/transaction/repository"
 	"errors"
@@ -29,6 +30,8 @@ func FindAllTransactionDetailByTransaction(transactionId int64) (*[]model.Transa
 }
 
 func CreateTransaction(transactions *model.Transaction, transactionDetails *[]model.TransactionDetail) error {
+	tx := db.Orm.Begin()
+
 	if *transactions.MemberId > 0 {
 		member, err := memberRepo.FindOneMember(*transactions.MemberId)
 		if err != nil {
@@ -41,21 +44,24 @@ func CreateTransaction(transactions *model.Transaction, transactionDetails *[]mo
 
 	transactions.Status = 2
 	transactions.Details = nil
-	repository.CreateTransaction(transactions)
+	err := repository.CreateTransaction(transactions, tx)
 
 	for i := 0; i < len(*transactionDetails); i++ {
 		var transactionDetail = &(*transactionDetails)[i]
 		(*transactionDetails)[i].TransactionId = transactions.Id
 		product, err := productRepo.FindOneProduct(transactionDetail.ProductId)
 		if err != nil {
+			tx.Rollback()
 			return err
 		}
 		productCategory, err := productRepo.FindOneProductCategory(product.ProductCategoryId)
 		if err != nil {
+			tx.Rollback()
 			return err
 		}
 		if productCategory.Id > 1 {
 			if product.Stock < 0 {
+				tx.Rollback()
 				return errors.New("product empty")
 			}
 			product.Stock = product.Stock - transactionDetail.Quantity
@@ -65,14 +71,23 @@ func CreateTransaction(transactions *model.Transaction, transactionDetails *[]mo
 		if *transactionDetail.PromotionId > 0 {
 			promotion, err := promotionRepo.FindOnePromotion(*transactionDetail.PromotionId)
 			if err != nil {
+				tx.Rollback()
 				return err
 			}
 			(*transactionDetails)[i].PromotionId = func() *int64 { i := int64(promotion.Id); return &i }()
 		} else {
 			(*transactionDetails)[i].PromotionId = nil
 		}
-		repository.CreateTransactionDetail(transactionDetail)
+		repository.CreateTransactionDetail(transactionDetail, tx)
 	}
+
+	if err != nil {
+		// rollback the transaction in case of error
+		tx.Rollback()
+		return err
+	}
+	// Or commit the transaction
+	tx.Commit()
 
 	return nil
 }

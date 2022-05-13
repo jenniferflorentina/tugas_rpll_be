@@ -37,8 +37,9 @@ func CreatePayment(payment *model.Payment) error {
 			if member.Point < 0 {
 				return errors.New("point is not enough")
 			}
-			memberRepository.UpdateMember(member)
 		}
+		member.Point += int64(payment.Amount * 0.05)
+		memberRepository.UpdateMember(member)
 	}
 
 	payment.Status = "Complete"
